@@ -6,11 +6,9 @@ const { User } = require("./models/User");
 const config = require("./config/key");
 
 // application/x-www-form-urlencoded 를 분석해서 가져옴, json type도 분석
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const mongoose = require("mongoose");
-const { request } = require("express");
 mongoose
   .connect(config.mongoURI, {
     useNewUrlParser: true,
@@ -24,8 +22,9 @@ mongoose
 app.get("/", (req, res) => res.send("Hello World!~"));
 
 app.post("/register", (req, res) => {
-  // 회원 가입 할 때 필요한 정보들을 client에서 가져오면 DB에 넣는다
-  const user = new User(request.body);
+  // signup시 날아온 모델 요청을 DB에 담음
+  const user = new User(req.body);
+
   user.save((err, userInfo) => {
     if (err) return res.json({ success: false, err });
     return res.status(200).json({
