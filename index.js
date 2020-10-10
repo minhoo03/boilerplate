@@ -24,8 +24,9 @@ app.get("/", (req, res) => res.send("Hello World!~"));
 app.post("/register", (req, res) => {
   // signup시 날아온 모델 요청을 DB에 담음
   const user = new User(req.body);
-
+  console.log(req.body);
   user.save((err, userInfo) => {
+    console.log(req.body)
     if (err) return res.json({ success: false, err });
     return res.status(200).json({
       success: true,
